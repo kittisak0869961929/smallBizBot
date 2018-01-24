@@ -61,11 +61,11 @@ def send():
 def handle_text_message(event):
     text = event.message.text
 
-    if text == 'pob':
+    if text == 'pob' or text == 'metz':
         line_bot_api.reply_message(
             event.reply_token,
             [
-                TextSendMessage(text='Whatsup, Im Pob jaaa'),
+                TextSendMessage(text='Whatsup, Im {} jaaa'.format(text)),
                 TextSendMessage(text='How can I help you?')
             ]
         )
