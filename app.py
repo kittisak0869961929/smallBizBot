@@ -65,7 +65,7 @@ def handle_text_message(event):
         line_bot_api.reply_message(
             event.reply_token,
             [
-                TextSendMessage(text='Whatsup, Im {} jaaa'.format(text)),
+                TextSendMessage(text='Whatsup, Im {} jaaa'.format(text.upper())),
                 TextSendMessage(text='How can I help you?')
             ]
         )
