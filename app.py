@@ -61,11 +61,22 @@ def send():
 def handle_text_message(event):
     text = event.message.text
 
-    if text == 'pob' or text == 'metz':
+    case = {
+        'pob': lambda: line_bot_api.reply_message(
+            event.reply_token,
+            [TextSendMessage(text = 'Whatsup, Im {} jaaa. How can I help you?'.format(text.upper()))]
+        ),
+        'are you happy?': lambda: line_bot_api.reply_message(
+            event.reply_token,
+            [TextSendMessage(text = 'Yes Im very happy, and you?')]
+        )
+    }
+
+    if text in case:
+        case[text]()
+    else:
         line_bot_api.reply_message(
             event.reply_token,
-            [
-                TextSendMessage(text='Whatsup, Im {} jaaa'.format(text.upper())),
-                TextSendMessage(text='How can I help you?')
-            ]
+            [TextSendMessage(text = '...')]
         )
+    
