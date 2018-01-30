@@ -5,7 +5,11 @@ from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage
+    MessageEvent, TextMessage, TextSendMessage,
+    SourceUser,
+    ButtonsTemplate,
+    MessageTemplateAction, URITemplateAction,
+    TemplateSendMessage
 )
 
 app = Flask(__name__)
@@ -59,13 +63,62 @@ def send():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_text_message(event):
-    text = event.message.text
-
-    case = {
-        'pob': lambda: line_bot_api.reply_message(
+    # declare functions to use in dict:
+    def get_profile():
+        if isinstance(event.source, SourceUser):
+            profile = line_bot_api.get_profile(event.source.user_id)
+            # log in terminal:
+            app.logger.info('Display name: ' + profile.display_name + 
+                            '\nUser id: ' + profile.user_id +
+                            '\nPicture: ' + profile.picture_url +
+                            '\nStatus: ' + profile.status_message)
+            # end of log
+            # reply msg:
+            line_bot_api.reply_message(
+                event.reply_token,
+                [
+                    TextSendMessage(text='Your Display Name: ' + profile.display_name),
+                    TextSendMessage(text='Your Status msg: ' + profile.status_message)
+                ]
+            )
+        else:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text='Invalid user id'))
+    def send_buttons():
+        buttons_template = ButtonsTemplate(
+            thumbnail_image_url='https://is4-ssl.mzstatic.com/image/thumb/Purple111/v4/59/bc/39/59bc3937-cf92-451d-50ce-bb33b95ebe85/source/1200x630bb.jpg',
+            image_aspect_ratio='square',
+            image_size='contain',
+            image_background_color='#F4429B',
+            title='Test Menu',
+            text='Please select',
+            actions=[
+                MessageTemplateAction(
+                    label='Message',
+                    text='Selected Message'
+                ),
+                URITemplateAction(
+                    label='URI',
+                    uri='https://www.google.com'
+                )
+            ]
+        )
+        template_message = TemplateSendMessage(
+            alt_text='alt text for buttons',
+            template=buttons_template
+        )
+        line_bot_api.reply_message(
             event.reply_token,
-            [TextSendMessage(text = 'Whatsup, Im {} jaaa. How can I help you?'.format(text.upper()))]
-        ),
+            template_message
+        )
+
+    # detect an user's sent message:
+    text = event.message.text
+    
+    case = {
+        'profile': get_profile,
+        'pob': send_buttons,
         'are you happy?': lambda: line_bot_api.reply_message(
             event.reply_token,
             [TextSendMessage(text = 'Yes Im very happy, and you?')]
@@ -77,6 +130,6 @@ def handle_text_message(event):
     else:
         line_bot_api.reply_message(
             event.reply_token,
-            [TextSendMessage(text = '...')]
+            [TextSendMessage(text = 'I dont understand kub')]
         )
     
