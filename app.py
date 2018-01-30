@@ -68,10 +68,10 @@ def handle_text_message(event):
         if isinstance(event.source, SourceUser):
             profile = line_bot_api.get_profile(event.source.user_id)
             # log in terminal:
-            app.logger.info('Display name: ' + profile.display_name + 
-                            '\nUser id: ' + profile.user_id +
-                            '\nPicture: ' + profile.picture_url +
-                            '\nStatus: ' + profile.status_message)
+            app.logger.info('Display name: ' + str(profile.display_name) + 
+                            '\nUser id: ' + str(profile.user_id) +
+                            '\nPicture: ' + str(profile.picture_url) +
+                            '\nStatus: ' + str(profile.status_message))
             # end of log
             # reply msg:
             line_bot_api.reply_message(
