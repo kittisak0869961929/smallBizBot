@@ -77,8 +77,8 @@ def handle_text_message(event):
             line_bot_api.reply_message(
                 event.reply_token,
                 [
-                    TextSendMessage(text='Your Display Name: ' + profile.display_name),
-                    TextSendMessage(text='Your Status msg: ' + profile.status_message)
+                    TextSendMessage(text='Your Display Name: ' + str(profile.display_name)),
+                    TextSendMessage(text='Your Status msg: ' + str(profile.status_message))
                 ]
             )
         else:
