@@ -118,11 +118,27 @@ def handle_text_message(event):
     
     case = {
         'profile': get_profile,
-        'pob': send_buttons,
+        'button': send_buttons,
         'are you happy?': lambda: line_bot_api.reply_message(
             event.reply_token,
             [TextSendMessage(text = 'Yes Im very happy, and you?')]
-        )
+        ),
+        'best': lambda: line_bot_api.reply_message(
+            event.reply_token,
+            [TextSendMessage(text = 'เธอมันรา้ยยยยยย !!')]
+        ),
+        'เบส': lambda: line_bot_api.reply_message(
+            event.reply_token,
+            [TextSendMessage(text = 'เธอมันเคี่ยวววว !!')]
+        ),
+        'pob': lambda: line_bot_api.reply_message(
+            event.reply_token,
+            [TextSendMessage(text = 'อุ๊ย คนนี้หล่อจุง <3')]
+        ),
+        'ภพ': lambda: line_bot_api.reply_message(
+            event.reply_token,
+            [TextSendMessage(text = 'คนดีๆแบบนี้ จะหาได้ที่ไหนอีก')]
+        ),
     }
 
     if text in case:
@@ -130,6 +146,6 @@ def handle_text_message(event):
     else:
         line_bot_api.reply_message(
             event.reply_token,
-            [TextSendMessage(text = 'I dont understand kub')]
+            [TextSendMessage(text = 'See ya')]
         )
     
