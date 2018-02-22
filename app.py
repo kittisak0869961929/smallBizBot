@@ -169,9 +169,9 @@ def handle_text_message(event):
 
     if text in case:
         case[text]()
-    else:
-        line_bot_api.reply_message(
-            event.reply_token,
-            [TextSendMessage(text = 'See ya')]
-        )
+    # else:
+    #     line_bot_api.reply_message(
+    #         event.reply_token,
+    #         [TextSendMessage(text = 'See ya')]
+    #     )
     
