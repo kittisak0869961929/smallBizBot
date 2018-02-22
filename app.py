@@ -113,6 +113,38 @@ def handle_text_message(event):
             template_message
         )
 
+    def nBest_buttons():
+        buttons_template = ButtonsTemplate(
+            # thumbnail_image_url='https://is4-ssl.mzstatic.com/image/thumb/Purple111/v4/59/bc/39/59bc3937-cf92-451d-50ce-bb33b95ebe85/source/1200x630bb.jpg',
+            # image_aspect_ratio='square',
+            # image_size='contain',
+            # image_background_color='#F4429B',
+            title='What do you think?',
+            text='คิดว่าน้องเบสเป็นคนยังไง?',
+            actions=[
+                MessageTemplateAction(
+                    label='เคี่ยว',
+                    text='ใช่เลยยย !!'
+                ),
+                MessageTemplateAction(
+                    label='เจิดจรัสดั่งพระอาทิตย์',
+                    text='เห็นด้วยที่สุด !!'
+                ),
+                MessageTemplateAction(
+                    label='น่ารัก',
+                    text='ไม่จริงอ่ะ !!'
+                ),
+            ]
+        )
+        template_message = TemplateSendMessage(
+            alt_text='alt text for buttons',
+            template=buttons_template
+        )
+        line_bot_api.reply_message(
+            event.reply_token,
+            template_message
+        )
+
     # detect an user's sent message:
     text = event.message.text
     
@@ -123,14 +155,8 @@ def handle_text_message(event):
             event.reply_token,
             [TextSendMessage(text = 'Yes Im very happy, and you?')]
         ),
-        'best': lambda: line_bot_api.reply_message(
-            event.reply_token,
-            [TextSendMessage(text = 'เธอมันรา้ยยยยยย !!')]
-        ),
-        'เบส': lambda: line_bot_api.reply_message(
-            event.reply_token,
-            [TextSendMessage(text = 'เธอมันเคี่ยวววว !!')]
-        ),
+        'best': nBest_buttons,
+        'เบส': nBest_buttons,
         'pob': lambda: line_bot_api.reply_message(
             event.reply_token,
             [TextSendMessage(text = 'อุ๊ย คนนี้หล่อจุง <3')]
