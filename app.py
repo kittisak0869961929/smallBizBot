@@ -87,10 +87,12 @@ def handle_text_message(event):
                 TextSendMessage(text='Invalid user id'))
     def send_buttons():
         buttons_template = ButtonsTemplate(
+            # have an image
             thumbnail_image_url='https://is4-ssl.mzstatic.com/image/thumb/Purple111/v4/59/bc/39/59bc3937-cf92-451d-50ce-bb33b95ebe85/source/1200x630bb.jpg',
             image_aspect_ratio='square',
             image_size='contain',
             image_background_color='#F4429B',
+            
             title='Test Menu',
             text='Please select',
             actions=[
@@ -115,10 +117,7 @@ def handle_text_message(event):
 
     def nBest_buttons():
         buttons_template = ButtonsTemplate(
-            # thumbnail_image_url='https://is4-ssl.mzstatic.com/image/thumb/Purple111/v4/59/bc/39/59bc3937-cf92-451d-50ce-bb33b95ebe85/source/1200x630bb.jpg',
-            # image_aspect_ratio='square',
-            # image_size='contain',
-            # image_background_color='#F4429B',
+            # no image
             title='What do you think?',
             text='คิดว่าน้องเบสเป็นคนยังไง?',
             actions=[
@@ -169,6 +168,10 @@ def handle_text_message(event):
 
     if text in case:
         case[text]()
+    
+    # in case the bot can't understand an user's msg :
+    # (note that this action will response to all text msgs including text msgs from pushing buttons)
+    
     # else:
     #     line_bot_api.reply_message(
     #         event.reply_token,
